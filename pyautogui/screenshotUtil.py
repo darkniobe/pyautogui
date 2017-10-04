@@ -121,8 +121,12 @@ def locateCenterOnScreen(image, grayscale=False, region=None):
     return center(locateOnScreen(image, grayscale, region))
 
 
-def _screenshot_win32(imageFilename=None):
-    im = ImageGrab.grab()
+def _screenshot_win32(imageFilename=None, region=None):
+    if region is not None:
+        x, y, width, height = [x for x in region]
+        im = ImageGrab.grab(bbox=(x,y,x+width,y+height))
+    else:
+        im = ImageGrab.grab()
     if imageFilename is not None:
         im.save(imageFilename)
     return im
